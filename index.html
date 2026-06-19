@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CampusKudi — Cute Lagegi. Rule Karegi.</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --pink:#E91E8C;
+  --pink-light:#FCE4F3;
+  --pink-mid:#F48CBB;
+  --pink-dark:#B0146A;
+  --black:#1A1A1A;
+  --gray:#F7F3F5;
+  --gray2:#EDE8EA;
+  --gray3:#9A8F93;
+  --white:#FFFFFF;
+  --font-display:'Playfair Display',serif;
+  --font-body:'DM Sans',sans-serif;
+  --radius:12px;
+  --shadow:0 4px 24px rgba(233,30,140,0.10);
+}
+body{font-family:var(--font-body);background:var(--white);color:var(--black);overflow-x:hidden;}
+.page{display:none;min-height:100vh;}
+.page.active{display:block;}
+
+/* ======= NAVBAR ======= */
+.navbar{background:var(--white);border-bottom:1.5px solid var(--pink-light);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;}
+.nav-logo{font-family:var(--font-display);font-size:1.7rem;color:var(--pink);font-style:italic;cursor:pointer;}
+.nav-icons{display:flex;gap:1rem;align-items:center;}
+.nav-icon{background:none;border:none;cursor:pointer;font-size:1.2rem;color:var(--black);position:relative;padding:4px;}
+.nav-icon:hover{color:var(--pink);}
+.badge{position:absolute;top:-4px;right:-4px;background:var(--pink);color:#fff;border-radius:50%;width:16px;height:16px;font-size:9px;display:flex;align-items:center;justify-content:center;font-weight:600;}
+.hamburger{font-size:1.3rem;background:none;border:none;cursor:pointer;color:var(--black);}
+
+/* ======= BANNER ======= */
+.free-ship-bar{background:var(--pink);color:#fff;text-align:center;padding:8px;font-size:12px;font-weight:500;letter-spacing:.5px;}
+
+/* ======= BUTTONS ======= */
+.btn-primary{background:var(--pink);color:#fff;border:none;padding:12px 28px;border-radius:50px;font-family:var(--font-body);font-size:.9rem;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-primary:hover{background:var(--pink-dark);}
+.btn-outline{background:transparent;color:var(--pink);border:2px solid var(--pink);padding:10px 24px;border-radius:50px;font-family:var(--font-body);font-size:.9rem;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-outline:hover{background:var(--pink-light);}
+.btn-black{background:var(--black);color:#fff;border:none;padding:12px 28px;border-radius:50px;font-family:var(--font-body);font-size:.9rem;font-weight:600;cursor:pointer;transition:.2s;}
+.btn-black:hover{background:#333;}
+
+/* ======= HOME PAGE ======= */
+#home .hero{display:grid;grid-template-columns:1fr 1fr;min-height:500px;background:var(--pink-light);}
+#home .hero-left{padding:4rem 3rem;display:flex;flex-direction:column;justify-content:center;}
+#home .hero-left h1{font-family:var(--font-display);font-size:3.5rem;line-height:1.1;margin-bottom:.5rem;}
+#home .hero-left h1 span{color:var(--pink);}
+#home .hero-left p{color:var(--gray3);margin-bottom:2rem;font-size:1rem;}
+#home .hero-right{background:linear-gradient(135deg,#FCE4F3 60%,#F48CBB 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#home .hero-img-placeholder{width:260px;height:320px;border-radius:20px;background:linear-gradient(135deg,#E91E8C22,#E91E8C44);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;border:2.5px dashed var(--pink-mid);}
+#home .hero-img-placeholder span{font-size:3rem;}
+#home .hero-img-placeholder p{font-size:.8rem;color:var(--pink-dark);font-weight:500;}
+
+.trust-bar{display:flex;gap:0;border-top:1.5px solid var(--pink-light);border-bottom:1.5px solid var(--pink-light);}
+.trust-item{flex:1;padding:14px 12px;text-align:center;font-size:.75rem;font-weight:500;color:var(--black);border-right:1.5px solid var(--pink-light);}
+.trust-item:last-child{border-right:none;}
+.trust-item span{display:block;font-size:1.1rem;margin-bottom:2px;}
+
+.section-title{text-align:center;font-family:var(--font-display);font-size:1.8rem;margin-bottom:2rem;}
+.section-title .heart{color:var(--pink);}
+
+.categories-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;padding:3rem 3rem;}
+.cat-card{text-align:center;cursor:pointer;}
+.cat-card-img{width:100%;aspect-ratio:1;border-radius:var(--radius);background:var(--pink-light);display:flex;align-items:center;justify-content:center;font-size:2.5rem;margin-bottom:.75rem;transition:.2s;}
+.cat-card-img:hover{background:var(--pink-mid);}
+.cat-card h3{font-size:.95rem;font-weight:600;margin-bottom:.25rem;}
+.cat-card a{font-size:.8rem;color:var(--pink);text-decoration:none;font-weight:500;}
+
+.reels-section{padding:2rem 3rem;background:var(--gray);}
+.reels-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;}
+.reel-card{aspect-ratio:9/16;border-radius:var(--radius);background:linear-gradient(to bottom,var(--pink-mid),var(--pink));display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:2rem;color:#fff;max-height:180px;position:relative;overflow:hidden;}
+.reel-card::after{content:"▶";position:absolute;font-size:1.5rem;}
+
+.promo-banner{margin:3rem;border-radius:20px;background:var(--black);color:#fff;padding:2.5rem 3rem;display:flex;align-items:center;justify-content:space-between;}
+.promo-banner h2{font-family:var(--font-display);font-size:2rem;line-height:1.2;}
+.promo-banner h2 span{color:var(--pink);}
+.sticky-note{background:#FFF9C4;color:#333;padding:1rem 1.5rem;border-radius:8px;font-size:.9rem;font-weight:500;transform:rotate(-2deg);max-width:200px;font-family:var(--font-display);font-style:italic;}
+
+/* ======= COLLECTION PAGE ======= */
+#collection .col-header{padding:2rem 3rem 1rem;text-align:center;}
+#collection .col-header h1{font-family:var(--font-display);font-size:2.2rem;}
+.collection-layout{display:grid;grid-template-columns:220px 1fr;gap:2rem;padding:1rem 3rem 3rem;}
+.filter-sidebar{border-right:1.5px solid var(--pink-light);padding-right:2rem;}
+.filter-sidebar h3{font-size:.85rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--gray3);margin-bottom:.75rem;margin-top:1.5rem;}
+.filter-sidebar h3:first-child{margin-top:0;}
+.filter-option{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;cursor:pointer;font-size:.9rem;}
+.filter-option input{accent-color:var(--pink);}
+.color-dots{display:flex;gap:.5rem;margin-top:.5rem;}
+.color-dot{width:20px;height:20px;border-radius:50%;cursor:pointer;border:2px solid transparent;}
+.color-dot.active{border-color:var(--black);}
+.filter-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.filter-btn{display:flex;align-items:center;gap:.4rem;border:1.5px solid var(--gray2);border-radius:50px;padding:8px 16px;font-size:.85rem;font-weight:500;cursor:pointer;background:var(--white);}
+.products-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.product-card{border-radius:var(--radius);overflow:hidden;border:1.5px solid var(--pink-light);cursor:pointer;transition:.2s;position:relative;}
+.product-card:hover{box-shadow:var(--shadow);transform:translateY(-2px);}
+.product-card-img{aspect-ratio:3/4;background:linear-gradient(135deg,var(--pink-light),var(--pink-mid));display:flex;align-items:center;justify-content:center;font-size:2.5rem;position:relative;}
+.bestseller-badge{position:absolute;top:10px;left:10px;background:var(--pink);color:#fff;font-size:.7rem;font-weight:700;padding:4px 10px;border-radius:50px;letter-spacing:.5px;}
+.product-card-info{padding:.9rem;}
+.product-card-info h4{font-size:.9rem;font-weight:600;margin-bottom:.3rem;}
+.product-card-info .price{color:var(--pink);font-weight:700;font-size:1rem;}
+.load-more{text-align:center;padding:2rem 0;grid-column:1/-1;}
+
+/* ======= PRODUCT PAGE ======= */
+#product .product-layout{display:grid;grid-template-columns:1fr 1fr;gap:3rem;padding:2rem 3rem;}
+.product-gallery{display:grid;grid-template-columns:80px 1fr;gap:1rem;}
+.thumb-col{display:flex;flex-direction:column;gap:.75rem;}
+.thumb{width:72px;height:80px;border-radius:8px;background:var(--pink-light);cursor:pointer;border:2px solid transparent;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+.thumb.active{border-color:var(--pink);}
+.main-img{border-radius:var(--radius);background:linear-gradient(135deg,var(--pink-light),var(--pink-mid));display:flex;align-items:center;justify-content:center;font-size:4rem;aspect-ratio:3/4;position:relative;}
+.best-seller-tag{position:absolute;top:12px;right:12px;background:var(--pink);color:#fff;font-size:.75rem;font-weight:700;padding:5px 12px;border-radius:50px;}
+.product-info{padding-top:1rem;}
+.product-info h1{font-family:var(--font-display);font-size:1.6rem;margin-bottom:.5rem;}
+.product-price{font-size:1.6rem;font-weight:700;color:var(--pink);margin-bottom:.5rem;}
+.rating{display:flex;align-items:center;gap:.5rem;margin-bottom:1rem;font-size:.85rem;}
+.stars{color:#F5C518;}
+.product-desc{color:var(--gray3);font-size:.9rem;margin-bottom:1.5rem;}
+.color-section,.size-section{margin-bottom:1.5rem;}
+.color-section label,.size-section label{font-size:.85rem;font-weight:600;display:block;margin-bottom:.6rem;}
+.size-btns{display:flex;gap:.5rem;flex-wrap:wrap;}
+.size-btn{border:1.5px solid var(--gray2);background:var(--white);padding:8px 16px;border-radius:8px;font-size:.85rem;cursor:pointer;font-family:var(--font-body);}
+.size-btn.active{border-color:var(--pink);background:var(--pink-light);color:var(--pink);font-weight:600;}
+.action-btns{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem;}
+.wishlist-btn{background:none;border:none;display:flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--gray3);cursor:pointer;font-family:var(--font-body);}
+.mini-trust{display:flex;gap:1.5rem;font-size:.78rem;color:var(--gray3);}
+
+/* ======= CART PAGE ======= */
+#cart .cart-layout{display:grid;grid-template-columns:1fr 360px;gap:2rem;padding:2rem 3rem;}
+.cart-table{width:100%;}
+.cart-table th{font-size:.75rem;text-transform:uppercase;letter-spacing:1px;color:var(--gray3);padding:.75rem 0;border-bottom:1.5px solid var(--gray2);font-weight:600;}
+.cart-table td{padding:1rem 0;border-bottom:1.5px solid var(--gray2);vertical-align:middle;}
+.cart-item-info{display:flex;gap:1rem;align-items:center;}
+.cart-item-img{width:70px;height:80px;border-radius:8px;background:var(--pink-light);display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0;}
+.cart-item-name{font-size:.9rem;font-weight:600;margin-bottom:.2rem;}
+.cart-item-meta{font-size:.78rem;color:var(--gray3);}
+.qty-control{display:flex;align-items:center;gap:.5rem;}
+.qty-btn{width:28px;height:28px;border:1.5px solid var(--gray2);background:var(--white);border-radius:6px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+.remove-btn{background:none;border:none;cursor:pointer;color:var(--gray3);font-size:1rem;}
+.order-summary-box{border:1.5px solid var(--pink-light);border-radius:var(--radius);padding:1.5rem;height:fit-content;position:sticky;top:80px;}
+.order-summary-box h3{font-size:1rem;font-weight:700;margin-bottom:1.25rem;}
+.summary-row{display:flex;justify-content:space-between;margin-bottom:.75rem;font-size:.9rem;}
+.summary-row.total{font-weight:700;font-size:1.05rem;border-top:1.5px solid var(--gray2);padding-top:.75rem;margin-top:.25rem;}
+.summary-row.savings{color:var(--pink);font-weight:600;font-size:.85rem;}
+.coupon-row{display:flex;gap:.5rem;margin-bottom:1rem;}
+.coupon-row input{flex:1;border:1.5px solid var(--gray2);border-radius:8px;padding:8px 12px;font-size:.85rem;font-family:var(--font-body);outline:none;}
+.coupon-row input:focus{border-color:var(--pink);}
+.free-ship-reminder{text-align:center;font-size:.78rem;color:var(--gray3);margin-bottom:1rem;padding:8px;background:var(--gray);border-radius:8px;}
+
+/* ======= LOGIN PAGE ======= */
+#login{background:var(--pink-light);}
+#login .login-container{max-width:420px;margin:0 auto;padding:4rem 2rem;}
+#login .login-box{background:var(--white);border-radius:20px;padding:2.5rem;box-shadow:var(--shadow);}
+#login .login-box h2{text-align:center;font-size:.95rem;color:var(--gray3);margin-bottom:.25rem;font-weight:400;}
+#login .login-box p{text-align:center;font-size:.85rem;color:var(--gray3);margin-bottom:1.5rem;}
+.tab-row{display:flex;border-bottom:2px solid var(--gray2);margin-bottom:1.5rem;}
+.tab-btn{flex:1;padding:.75rem;text-align:center;font-size:.9rem;font-weight:600;cursor:pointer;border:none;background:none;font-family:var(--font-body);color:var(--gray3);}
+.tab-btn.active{color:var(--pink);border-bottom:2.5px solid var(--pink);margin-bottom:-2px;}
+.form-group{margin-bottom:1rem;}
+.form-group label{display:block;font-size:.8rem;font-weight:600;margin-bottom:.4rem;color:var(--black);}
+.form-group input{width:100%;border:1.5px solid var(--gray2);border-radius:10px;padding:11px 14px;font-size:.9rem;font-family:var(--font-body);outline:none;transition:.15s;}
+.form-group input:focus{border-color:var(--pink);}
+.forgot-link{text-align:right;font-size:.8rem;color:var(--pink);cursor:pointer;margin-top:-0.5rem;margin-bottom:1rem;}
+.divider{text-align:center;font-size:.8rem;color:var(--gray3);margin:1rem 0;position:relative;}
+.divider::before{content:'';position:absolute;top:50%;left:0;right:0;height:1px;background:var(--gray2);}
+.divider span{background:var(--white);padding:0 .75rem;position:relative;}
+.social-btns{display:flex;gap:.75rem;}
+.social-btn{flex:1;border:1.5px solid var(--gray2);border-radius:50px;padding:10px;display:flex;align-items:center;justify-content:center;gap:.5rem;font-size:.85rem;font-weight:500;cursor:pointer;background:var(--white);font-family:var(--font-body);}
+.social-btn:hover{border-color:var(--pink-mid);}
+.create-account{text-align:center;font-size:.82rem;margin-top:1rem;color:var(--gray3);}
+.create-account a{color:var(--pink);font-weight:600;cursor:pointer;}
+
+/* ======= ACCOUNT PAGE ======= */
+#account .profile-card{background:var(--pink);color:#fff;margin:1.5rem;border-radius:16px;padding:1.5rem;display:flex;align-items:center;gap:1rem;}
+.avatar{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:1.5rem;}
+.profile-card h3{font-size:1.1rem;font-weight:600;margin-bottom:.1rem;}
+.profile-card p{font-size:.82rem;opacity:.85;}
+.stats-row{display:flex;gap:1px;background:rgba(255,255,255,.2);border-radius:10px;margin-top:1rem;overflow:hidden;}
+.stat-item{flex:1;background:rgba(255,255,255,.1);text-align:center;padding:.6rem;}
+.stat-item strong{display:block;font-size:1.1rem;font-weight:700;}
+.stat-item span{font-size:.72rem;opacity:.8;}
+.menu-list{padding:0 1.5rem;}
+.menu-item{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--pink-light);cursor:pointer;font-size:.9rem;font-weight:500;}
+.menu-item:hover{color:var(--pink);}
+.menu-item-left{display:flex;align-items:center;gap:.75rem;}
+.menu-icon{width:36px;height:36px;border-radius:50%;background:var(--pink-light);display:flex;align-items:center;justify-content:center;font-size:1rem;}
+
+/* ======= CHECKOUT PAGE ======= */
+#checkout .checkout-layout{display:grid;grid-template-columns:1fr 1fr 340px;gap:2rem;padding:2rem 3rem;}
+.checkout-section h3{font-size:1rem;font-weight:700;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:1.5px solid var(--pink-light);}
+.address-display{font-size:.88rem;line-height:1.7;color:var(--black);}
+.change-link{color:var(--pink);font-size:.82rem;cursor:pointer;font-weight:600;display:block;margin-top:.5rem;}
+.payment-options{display:flex;flex-direction:column;gap:.75rem;}
+.payment-option{border:1.5px solid var(--gray2);border-radius:10px;padding:1rem;display:flex;align-items:center;gap:.75rem;cursor:pointer;font-size:.9rem;}
+.payment-option.active{border-color:var(--pink);background:var(--pink-light);}
+.payment-option input[type=radio]{accent-color:var(--pink);}
+.payment-logos{display:flex;gap:.4rem;margin-left:auto;}
+.pay-logo{background:var(--white);border:1px solid var(--gray2);border-radius:4px;padding:2px 6px;font-size:.7rem;font-weight:700;}
+.pay-btn{width:100%;padding:14px;font-size:1rem;margin-top:1rem;}
+
+/* ======= ORDER TRACKING ======= */
+#tracking .tracking-layout{display:grid;grid-template-columns:1fr 280px;gap:2rem;padding:2rem 3rem;}
+.order-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap;gap:1rem;}
+.order-id{font-family:var(--font-display);font-size:1.3rem;}
+.status-badge{background:var(--pink-light);color:var(--pink);padding:5px 14px;border-radius:50px;font-size:.82rem;font-weight:700;}
+.tracking-steps{display:flex;justify-content:space-between;margin:2rem 0;position:relative;}
+.tracking-steps::before{content:'';position:absolute;top:20px;left:10%;right:10%;height:3px;background:var(--gray2);}
+.tracking-steps::after{content:'';position:absolute;top:20px;left:10%;width:35%;height:3px;background:var(--pink);}
+.step{display:flex;flex-direction:column;align-items:center;gap:.5rem;flex:1;font-size:.75rem;text-align:center;}
+.step-circle{width:40px;height:40px;border-radius:50%;background:var(--gray2);display:flex;align-items:center;justify-content:center;font-size:1rem;position:relative;z-index:1;}
+.step.done .step-circle{background:var(--pink);color:#fff;}
+.step.active .step-circle{background:var(--pink);color:#fff;box-shadow:0 0 0 4px var(--pink-light);}
+.step-date{color:var(--gray3);}
+.order-items-list{margin-top:1.5rem;}
+.order-item-row{display:flex;gap:1rem;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--pink-light);}
+.order-item-img{width:55px;height:60px;border-radius:8px;background:var(--pink-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.order-item-name{font-size:.88rem;font-weight:600;}
+.order-item-meta{font-size:.78rem;color:var(--gray3);}
+.order-item-price{margin-left:auto;font-weight:700;font-size:.95rem;color:var(--pink);}
+.shipping-info-box{border:1.5px solid var(--pink-light);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;}
+.shipping-info-box h4{font-size:.82rem;font-weight:700;margin-bottom:.5rem;color:var(--gray3);letter-spacing:.5px;text-transform:uppercase;}
+.shipping-info-box p{font-size:.85rem;line-height:1.6;}
+.track-courier-btn{width:100%;padding:13px;border-radius:50px;background:var(--black);color:#fff;border:none;font-family:var(--font-body);font-size:.9rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;}
+.track-courier-btn:hover{background:#333;}
+
+/* ======= BOTTOM NAV ======= */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1.5px solid var(--pink-light);display:flex;z-index:100;}
+.bottom-nav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:10px 0;font-size:.65rem;font-weight:600;cursor:pointer;background:none;border:none;font-family:var(--font-body);color:var(--gray3);}
+.bottom-nav-btn.active{color:var(--pink);}
+.bottom-nav-btn span{font-size:1.2rem;}
+
+/* ======= UTILITIES ======= */
+.breadcrumb{font-size:.8rem;color:var(--gray3);padding:.75rem 3rem;display:flex;gap:.4rem;align-items:center;}
+.breadcrumb a{color:var(--gray3);text-decoration:none;cursor:pointer;}
+.breadcrumb a:hover{color:var(--pink);}
+.page-heading{padding:1.5rem 3rem .5rem;display:flex;align-items:center;gap:.5rem;}
+.page-heading h2{font-family:var(--font-display);font-size:1.6rem;}
+.pb-80{padding-bottom:80px;}
+
+@media(max-width:768px){
+  #home .hero{grid-template-columns:1fr;}
+  #home .hero-right{display:none;}
+  .collection-layout{grid-template-columns:1fr;}
+  .filter-sidebar{display:none;}
+  #product .product-layout{grid-template-columns:1fr;}
+  #cart .cart-layout{grid-template-columns:1fr;}
+  #checkout .checkout-layout{grid-template-columns:1fr;}
+  #tracking .tracking-layout{grid-template-columns:1fr;}
+  .categories-grid{grid-template-columns:repeat(2,1fr);}
+  .reels-grid{grid-template-columns:repeat(2,1fr);}
+  .promo-banner{flex-direction:column;gap:1rem;}
+  .products-grid{grid-template-columns:repeat(2,1fr);}
+}
+</style>
+</head>
+<body>
+
+<!-- ===== FREE SHIPPING BAR ===== -->
+<div class="free-ship-bar">🎀 FREE SHIPPING ON ORDERS ABOVE ₹999 🎀</div>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <button class="hamburger" onclick="void(0)">☰</button>
+  <div class="nav-logo" onclick="showPage('home')">CampusKudi</div>
+  <div class="nav-icons">
+    <button class="nav-icon" onclick="showPage('home')">🔍</button>
+    <button class="nav-icon" onclick="openCart()" style="position:relative">🛍️<span class="badge">3</span></button>
+  </div>
+</nav>
+
+<!-- ========== PAGE: HOME ========== -->
+<div id="home" class="page active pb-80">
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-left">
+      <h1>CUTE LAGEGI.<br/><span>RULE KAREGI.</span></h1>
+      <p>Fits for the girls who overdress for attendance.</p>
+      <button class="btn-primary" onclick="showPage('collection')">SHOP NEW DROP</button>
+    </div>
+    <div class="hero-right">
+      <div class="hero-img-placeholder">
+        <span>👗</span>
+        <p>Main Character Energy</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Trust Bar -->
+  <div class="trust-bar">
+    <div class="trust-item"><span>💳</span>COD AVAILABLE</div>
+    <div class="trust-item"><span>🔄</span>7 DAY RETURNS</div>
+    <div class="trust-item"><span>⭐</span>PREMIUM QUALITY</div>
+    <div class="trust-item"><span>🔒</span>SECURE PAYMENT</div>
+  </div>
+
+  <!-- Categories -->
+  <div style="padding:3rem 3rem 0">
+    <div class="section-title">TRENDING RIGHT NOW <span class="heart">♥</span></div>
+  </div>
+  <div class="categories-grid">
+    <div class="cat-card" onclick="showPage('collection')">
+      <div class="cat-card-img">👕</div>
+      <h3>Oversized Tees</h3>
+      <a>Explore →</a>
+    </div>
+    <div class="cat-card" onclick="showPage('collection')">
+      <div class="cat-card-img">🧥</div>
+      <h3>Hoodies</h3>
+      <a>Explore →</a>
+    </div>
+    <div class="cat-card" onclick="showPage('collection')">
+      <div class="cat-card-img">👜</div>
+      <h3>Tote Bags</h3>
+      <a>Explore →</a>
+    </div>
+    <div class="cat-card" onclick="showPage('collection')">
+      <div class="cat-card-img">💍</div>
+      <h3>Accessories</h3>
+      <a>Explore →</a>
+    </div>
+  </div>
+
+  <!-- Reels -->
+  <div class="reels-section">
+    <div class="section-title" style="margin-bottom:1.25rem">Reels We're Loving <span class="heart">♥</span></div>
+    <div class="reels-grid">
+      <div class="reel-card">🎀</div>
+      <div class="reel-card">💕</div>
+      <div class="reel-card">✨</div>
+      <div class="reel-card">🌸</div>
+    </div>
+  </div>
+
+  <!-- Promo Banner -->
+  <div class="promo-banner">
+    <div>
+      <h2>ATTENDANCE LOW,<br/>AURA HIGH.</h2>
+      <button class="btn-primary" style="margin-top:1.25rem;" onclick="showPage('collection')">SHOP THE VIBE</button>
+    </div>
+    <div class="sticky-note">notes kam,<br/>style zyada.</div>
+  </div>
+</div>
+
+<!-- ========== PAGE: COLLECTION ========== -->
+<div id="collection" class="page pb-80">
+  <div class="col-header">
+    <h1>🎀 SHOP ALL</h1>
+  </div>
+
+  <div style="padding:0 3rem;">
+    <div class="filter-row">
+      <button class="filter-btn">⚙ FILTER</button>
+      <button class="filter-btn">ALL PRODUCTS ▾</button>
+      <button class="filter-btn">SORT ▾</button>
+    </div>
+  </div>
+
+  <div class="collection-layout">
+    <!-- Sidebar -->
+    <div class="filter-sidebar">
+      <h3>CATEGORIES</h3>
+      <label class="filter-option"><input type="radio" name="cat" checked/> All</label>
+      <label class="filter-option"><input type="radio" name="cat"/> Oversized Tees</label>
+      <label class="filter-option"><input type="radio" name="cat"/> Baby Tees</label>
+      <label class="filter-option"><input type="radio" name="cat"/> Hoodies</label>
+      <label class="filter-option"><input type="radio" name="cat"/> Tote Bags</label>
+      <label class="filter-option"><input type="radio" name="cat"/> Accessories</label>
+      <h3>SIZE</h3>
+      <label class="filter-option"><input type="checkbox"/> XS</label>
+      <label class="filter-option"><input type="checkbox" checked/> S</label>
+      <label class="filter-option"><input type="checkbox" checked/> M</label>
+      <label class="filter-option"><input type="checkbox"/> L</label>
+      <label class="filter-option"><input type="checkbox"/> XL</label>
+      <label class="filter-option"><input type="checkbox"/> XXL</label>
+      <h3>COLOR</h3>
+      <div class="color-dots">
+        <div class="color-dot active" style="background:#1A1A1A;"></div>
+        <div class="color-dot" style="background:#E91E8C;"></div>
+        <div class="color-dot" style="background:#F5E6C8;"></div>
+        <div class="color-dot" style="background:#C8D5F5;"></div>
+      </div>
+    </div>
+
+    <!-- Products Grid -->
+    <div>
+      <div class="products-grid">
+        <div class="product-card" onclick="showPage('product')">
+          <div class="product-card-img">👕<span class="bestseller-badge">BESTSELLER</span></div>
+          <div class="product-card-info">
+            <h4>Low Attendance High Maintenance Tee</h4>
+            <div class="price">₹799</div>
+          </div>
+        </div>
+        <div class="product-card" onclick="showPage('product')">
+          <div class="product-card-img" style="background:linear-gradient(135deg,#FCE4F3,#F48CBB);">👕</div>
+          <div class="product-card-info">
+            <h4>Main Character Energy Tee</h4>
+            <div class="price">₹799</div>
+          </div>
+        </div>
+        <div class="product-card" onclick="showPage('product')">
+          <div class="product-card-img" style="background:linear-gradient(135deg,#E8F5E9,#A5D6A7);">👕</div>
+          <div class="product-card-info">
+            <h4>Topper Nahi Toh Notch Hu Tee</h4>
+            <div class="price">₹799</div>
+          </div>
+        </div>
+        <div class="product-card" onclick="showPage('product')">
+          <div class="product-card-img" style="background:linear-gradient(135deg,#E3F2FD,#90CAF9);">👕</div>
+          <div class="product-card-info">
+            <h4>Overthinker Overdresser Tee</h4>
+            <div class="price">₹799</div>
+          </div>
+        </div>
+        <div class="product-card" onclick="showPage('product')">
+          <div class="product-card-img" style="background:linear-gradient(135deg,#FFF8E1,#FFCC80);">👕</div>
+          <div class="product-card-info">
+            <h4>Caffeine & Confidence Tee</h4>
+            <div class="price">₹799</div>
+          </div>
+        </div>
+        <div class="product-card" onclick="showPage('product')">
+          <div class="product-card-img" style="background:linear-gradient(135deg,#F3E5F5,#CE93D8);">👕</div>
+          <div class="product-card-info">
+            <h4>Net Yours Never Was Tee</h4>
+            <div class="price">₹799</div>
+          </div>
+        </div>
+        <div class="load-more">
+          <button class="btn-outline">LOAD MORE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE: PRODUCT ========== -->
+<div id="product" class="page pb-80">
+  <div class="product-layout">
+    <!-- Gallery -->
+    <div class="product-gallery">
+      <div class="thumb-col">
+        <div class="thumb active">👕</div>
+        <div class="thumb">🕶️</div>
+        <div class="thumb">✨</div>
+        <div class="thumb">🎀</div>
+      </div>
+      <div class="main-img">
+        👕
+        <div class="best-seller-tag">BEST SELLER</div>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="product-info">
+      <h1>Low Attendance High Maintenance Tee</h1>
+      <div class="product-price">₹799</div>
+      <div class="rating">
+        <span class="stars">★★★★</span>
+        <span style="color:var(--gray3);">4.9 (120 reviews)</span>
+      </div>
+      <p class="product-desc">For girls who attend college for outfits, not lectures. 😎</p>
+
+      <div class="color-section">
+        <label>Color: <strong>Black</strong></label>
+        <div class="color-dots">
+          <div class="color-dot active" style="background:#1A1A1A;width:28px;height:28px;"></div>
+          <div class="color-dot" style="background:#E91E8C;width:28px;height:28px;"></div>
+          <div class="color-dot" style="background:#C8D5F5;width:28px;height:28px;"></div>
+          <div class="color-dot" style="background:#F5E6C8;width:28px;height:28px;"></div>
+        </div>
+      </div>
+
+      <div class="size-section">
+        <label style="display:flex;justify-content:space-between;">Size: <span style="color:var(--pink);font-size:.8rem;cursor:pointer;">SIZE GUIDE</span></label>
+        <div class="size-btns">
+          <button class="size-btn">XS</button>
+          <button class="size-btn">S</button>
+          <button class="size-btn active">M</button>
+          <button class="size-btn">L</button>
+          <button class="size-btn">XL</button>
+          <button class="size-btn">XXL</button>
+        </div>
+      </div>
+
+      <div class="action-btns">
+        <button class="btn-primary" onclick="addToCart()" style="width:100%;padding:14px;font-size:1rem;border-radius:10px;">ADD TO CART</button>
+        <button class="btn-black" onclick="showPage('checkout')" style="width:100%;padding:14px;font-size:1rem;border-radius:10px;">BUY IT NOW</button>
+      </div>
+
+      <button class="wishlist-btn">🤍 ADD TO WISHLIST</button>
+
+      <div class="mini-trust" style="margin-top:1rem;">
+        <span>💳 COD Available</span>
+        <span>🔄 7 Day Returns</span>
+        <span>⭐ Premium Quality</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE: CART ========== -->
+<div id="cart" class="page pb-80">
+  <div class="page-heading">
+    <h2>🛍️ Your Cart</h2>
+  </div>
+  <div class="cart-layout">
+    <!-- Cart Items -->
+    <div>
+      <table class="cart-table">
+        <thead>
+          <tr>
+            <th style="width:45%">PRODUCT</th>
+            <th>PRICE</th>
+            <th>QTY</th>
+            <th>TOTAL</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="cart-items">
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="order-summary-box">
+      <h3>Have a Coupon? 🎀</h3>
+      <div class="coupon-row">
+        <input type="text" placeholder="Enter coupon code"/>
+        <button class="btn-primary" style="padding:8px 16px;border-radius:8px;font-size:.85rem;">APPLY</button>
+      </div>
+      <div class="summary-row savings">✓ You saved ₹300 on this order!</div>
+      <div style="border-top:1.5px solid var(--gray2);padding-top:1rem;margin-top:.5rem;">
+        <div id="cart-summary"></div>
+      </div>
+      <div class="free-ship-reminder">🎀 Add ₹803 more for FREE shipping!</div>
+      <button class="btn-primary" onclick="showPage('checkout')" style="width:100%;padding:14px;border-radius:10px;font-size:1rem;">PROCEED TO CHECKOUT</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE: LOGIN ========== -->
+<div id="login" class="page pb-80">
+  <div class="login-container">
+    <div style="text-align:center;padding:2rem 0 1rem;">
+      <div class="nav-logo" style="font-size:2.2rem;">CampusKudi</div>
+    </div>
+    <div class="login-box">
+      <h2>Welcome back, Kudi! 👋</h2>
+      <p>Log in to continue your cute shopping.</p>
+      <div class="tab-row">
+        <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">LOGIN</button>
+        <button class="tab-btn" id="signupTab" onclick="switchTab('signup')">SIGN UP</button>
+      </div>
+      <div id="loginForm">
+
+  <div class="form-group">
+    <label>Email Address</label>
+    <input
+      type="email"
+      id="login-email"
+      placeholder="Enter your email"
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Password</label>
+    <input
+      type="password"
+      id="login-password"
+      placeholder="Enter your password"
+    />
+  </div>
+
+  <div class="forgot-link">
+    Forgot Password?
+  </div>
+
+  <button
+    class="btn-primary"
+    onclick="login()"
+    style="width:100%;padding:13px;font-size:1rem;border-radius:10px;"
+  >
+    LOGIN
+  </button>
+
+  <div class="divider">
+    <span>or continue with</span>
+  </div>
+
+  <div class="social-btns">
+    <button class="social-btn">
+      🔵 Google
+    </button>
+
+    <button class="social-btn">
+      📷 Instagram
+    </button>
+  </div>
+
+  <div class="create-account">
+    New here?
+    <a onclick="switchTab('signup')">
+      Create an account
+    </a>
+  </div>
+
+</div>
+      <div id="signupForm" style="display:none;">
+
+  <div class="form-group">
+    <label>Full Name</label>
+    <input
+      type="text"
+      id="signup-name"
+      placeholder="Enter your name"
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Email Address</label>
+    <input
+      type="email"
+      id="signup-email"
+      placeholder="Enter your email"
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Password</label>
+    <input
+      type="password"
+      id="signup-password"
+      placeholder="Create a password"
+    />
+  </div>
+
+  <button
+    class="btn-primary"
+    onclick="register()"
+    style="width:100%;padding:13px;font-size:1rem;border-radius:10px;"
+  >
+    CREATE ACCOUNT
+  </button>
+
+  <div class="create-account">
+    Already a Kudi?
+    <a onclick="switchTab('login')">Login</a>
+  </div>
+
+</div>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE: ACCOUNT ========== -->
+<div id="account" class="page pb-80">
+  <div class="page-heading"><h2>My Account</h2></div>
+
+  <div class="profile-card">
+    <div class="avatar">👩</div>
+    <div>
+      <h3 id="account-name">CampusKudi User</h3>
+      <p id="account-email"></p>
+    </div>
+    <div class="stats-row" style="margin-left:auto;flex-direction:column;background:none;gap:0;">
+      <div style="display:flex;gap:1px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,.2);">
+        <div class="stat-item"><strong>12</strong><span>ORDERS</span></div>
+        <div class="stat-item"><strong>8</strong><span>WISHLIST</span></div>
+        <div class="stat-item"><strong>320 🎀</strong><span>KUDI PTS</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="menu-list">
+    <div class="menu-item" onclick="showPage('tracking')">
+      <div class="menu-item-left"><div class="menu-icon">📦</div>My Orders</div>
+      <span>›</span>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left"><div class="menu-icon">🤍</div>Wishlist</div>
+      <span>›</span>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left"><div class="menu-icon">📍</div>Address Book</div>
+      <span>›</span>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left"><div class="menu-icon">🎀</div>Kudi Points</div>
+      <span>›</span>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left"><div class="menu-icon">👤</div>Account Details</div>
+      <span>›</span>
+    </div>
+    <div class="menu-item">
+      <div class="menu-item-left"><div class="menu-icon">🔑</div>Change Password</div>
+      <span>›</span>
+    </div>
+    <div class="menu-item" onclick="showPage('login')" style="color:#e53935;">
+      <div class="menu-item-left"><div class="menu-icon" style="background:#ffeaea;">🚪</div>Log Out</div>
+      <span>›</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE: CHECKOUT ========== -->
+<div id="checkout" class="page pb-80">
+  <div class="page-heading"><h2>Checkout / Payment</h2></div>
+  <div style="text-align:center;font-size:.82rem;margin-bottom:1rem;">🔒 100% SECURE PAYMENT — Your details are safe with us.</div>
+
+  <div class="checkout-layout">
+    <!-- Shipping -->
+    <div class="checkout-section">
+      <h3>SHIPPING ADDRESS</h3>
+      <div class="address-display">
+        <strong>Neha Sharma</strong><br/>
+        23/1, College Road<br/>
+        Near North Campus<br/>
+        Delhi - 110007<br/>
+        India<br/>
+        +91 98765 43210
+      </div>
+      <a class="change-link">CHANGE</a>
+      <div style="margin-top:1.5rem;">
+        <h3>SHIPPING METHOD</h3>
+        <label class="payment-option active" style="margin-bottom:.5rem;">
+          <input type="radio" name="ship" checked/> Standard Shipping (3-5 days) — <strong>₹148</strong>
+        </label>
+        <label class="payment-option">
+          <input type="radio" name="ship"/> Express Shipping (1-2 days) — <strong>₹249</strong>
+        </label>
+      </div>
+    </div>
+
+    <!-- Payment -->
+    <div class="checkout-section">
+      <h3>PAYMENT METHOD</h3>
+      <div class="payment-options">
+        <label class="payment-option active">
+          <input type="radio" name="pay" checked/> UPI
+          <div class="payment-logos">
+            <span class="pay-logo" style="color:#4285F4;">G Pay</span>
+            <span class="pay-logo" style="color:#002970;">Paytm</span>
+            <span class="pay-logo" style="color:#6739B7;">PhonePe</span>
+          </div>
+        </label>
+        <label class="payment-option">
+          <input type="radio" name="pay"/> Credit / Debit Card
+        </label>
+        <label class="payment-option">
+          <input type="radio" name="pay"/> Net Banking
+        </label>
+        <label class="payment-option">
+          <input type="radio" name="pay"/> COD (Cash on Delivery)
+        </label>
+      </div>
+    </div>
+
+    <!-- Order Summary -->
+    <div class="checkout-section">
+      <h3>ORDER SUMMARY</h3>
+      <div class="order-item-row">
+        <div class="order-item-img">👕</div>
+        <div><div class="order-item-name">Low Attendance High Maintenance Tee</div></div>
+        <div class="order-item-price">₹799</div>
+      </div>
+      <div class="order-item-row">
+        <div class="order-item-img" style="background:linear-gradient(135deg,#FCE4F3,#F48CBB);">👕</div>
+        <div><div class="order-item-name">Main Character Energy Tee</div></div>
+        <div class="order-item-price">₹799</div>
+      </div>
+      <div class="order-item-row">
+        <div class="order-item-img" style="background:var(--black);">👜</div>
+        <div><div class="order-item-name">Kudi Tote Bag</div></div>
+        <div class="order-item-price">₹499</div>
+      </div>
+      <div style="border-top:1.5px solid var(--gray2);margin-top:1rem;padding-top:1rem;">
+        <div class="summary-row"><span>Subtotal</span><span>₹2,097</span></div>
+        <div class="summary-row"><span>Shipping</span><span>₹148</span></div>
+        <div class="summary-row total"><span>TOTAL</span><span style="color:var(--pink);">₹2,245</span></div>
+      </div>
+      <button class="btn-primary pay-btn" onclick="showPage('tracking')">PAY ₹2,097</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== PAGE: ORDER TRACKING ========== -->
+<div id="tracking" class="page pb-80">
+  <div class="page-heading">
+    <button onclick="showPage('account')" style="background:none;border:none;font-size:1.2rem;cursor:pointer;">←</button>
+    <h2>Order Tracking</h2>
+  </div>
+
+  <div class="tracking-layout">
+    <div>
+      <div class="order-header">
+        <div class="order-id">ORDER #CK98765</div>
+        <div class="status-badge">PROCESSING</div>
+      </div>
+      <div style="font-size:.82rem;color:var(--gray3);margin-bottom:1rem;">Placed on 20 May, 2024</div>
+
+      <!-- Tracking Steps -->
+      <div class="tracking-steps">
+        <div class="step done">
+          <div class="step-circle">✓</div>
+          <div>Order Placed</div>
+          <div class="step-date">20 May</div>
+        </div>
+        <div class="step active">
+          <div class="step-circle">⏳</div>
+          <div>Processing</div>
+          <div class="step-date">21 May</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">🚚</div>
+          <div>Shipped</div>
+          <div class="step-date">—</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">📦</div>
+          <div>Out for Delivery</div>
+          <div class="step-date">—</div>
+        </div>
+        <div class="step">
+          <div class="step-circle">🎀</div>
+          <div>Delivered</div>
+          <div class="step-date">—</div>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <h3 style="font-size:1rem;font-weight:700;margin-bottom:.5rem;">ORDER ITEMS</h3>
+      <div class="order-items-list">
+        <div class="order-item-row">
+          <div class="order-item-img">👕</div>
+          <div>
+            <div class="order-item-name">Low Attendance High Maintenance Tee</div>
+            <div class="order-item-meta">Black / M</div>
+          </div>
+          <div class="order-item-price">₹799</div>
+        </div>
+        <div class="order-item-row">
+          <div class="order-item-img" style="background:linear-gradient(135deg,#FCE4F3,#F48CBB);">👕</div>
+          <div>
+            <div class="order-item-name">Main Character Energy Tee</div>
+            <div class="order-item-meta">Pink / S</div>
+          </div>
+          <div class="order-item-price">₹799</div>
+        </div>
+        <div class="order-item-row">
+          <div class="order-item-img" style="background:var(--black);">👜</div>
+          <div>
+            <div class="order-item-name">Kudi Tote Bag</div>
+            <div class="order-item-meta">Black</div>
+          </div>
+          <div class="order-item-price">₹499</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Col -->
+    <div>
+      <div class="shipping-info-box">
+        <h4>SHIPPING ADDRESS</h4>
+        <p>Neha Sharma<br/>23/1, College Road<br/>Near North Campus<br/>Delhi - 110007<br/>India<br/>+91 98765 43210</p>
+      </div>
+      <div class="shipping-info-box">
+        <h4>ORDER SUMMARY</h4>
+        <div class="summary-row"><span>Subtotal</span><span>₹2,097</span></div>
+        <div class="summary-row"><span>Shipping</span><span style="color:green;">FREE</span></div>
+        <div class="summary-row total"><span>Total</span><span style="color:var(--pink);">₹2,097</span></div>
+      </div>
+      <button class="track-courier-btn">📦 TRACK WITH COURIER</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== BOTTOM NAV ========== -->
+<div class="bottom-nav">
+  <button class="bottom-nav-btn active" id="nav-home" onclick="showPage('home');setNav('nav-home')">
+    <span>🏠</span>Home
+  </button>
+  <button class="bottom-nav-btn" id="nav-collection" onclick="showPage('collection');setNav('nav-collection')">
+    <span>👗</span>Shop
+  </button>
+  <button class="bottom-nav-btn" id="nav-wishlist" onclick="setNav('nav-wishlist')">
+    <span>🤍</span>Wishlist
+  </button>
+  <button class="bottom-nav-btn" id="nav-account" onclick="showPage('login');setNav('nav-account')">
+    <span>👤</span>Account
+  </button>
+  <button class="bottom-nav-btn" id="nav-cart" onclick="openCart();setNav('nav-cart')" style="position:relative;">
+    <span style="position:relative;">🛍️<span class="badge" style="top:-8px;right:-8px;">3</span></span>Cart
+  </button>
+</div>
+
+<script>
+function showPage(id){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+  const navMap={home:'nav-home',collection:'nav-collection',cart:'nav-cart',login:'nav-account',account:'nav-account',tracking:'nav-account',checkout:'nav-cart',product:'nav-collection'};
+  if(navMap[id]) setNav(navMap[id]);
+}
+
+function setNav(id){
+  document.querySelectorAll('.bottom-nav-btn').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById(id);
+  if(el) el.classList.add('active');
+}
+
+function switchTab(tab){
+  if(tab==='login'){
+    document.getElementById('loginTab').classList.add('active');
+    document.getElementById('signupTab').classList.remove('active');
+    document.getElementById('loginForm').style.display='block';
+    document.getElementById('signupForm').style.display='none';
+  } else {
+    document.getElementById('signupTab').classList.add('active');
+    document.getElementById('loginTab').classList.remove('active');
+    document.getElementById('loginForm').style.display='none';
+    document.getElementById('signupForm').style.display='block';
+  }
+}
+
+// Size button toggle
+document.querySelectorAll('.size-btn').forEach(btn=>{
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.size-btn').forEach(b=>b.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+
+// Color dot toggle
+document.querySelectorAll('.color-dot').forEach(dot=>{
+  dot.addEventListener('click',function(){
+    this.closest('div').querySelectorAll('.color-dot').forEach(d=>d.classList.remove('active'));
+    this.classList.add('active');
+  });
+});
+</script>
+<script src="./js/api.js"></script>
+<script src="./js/products.js"></script>
+<script src="./js/auth.js"></script>
+<script src="./js/cart.js"></script>
+</body>
+</html>
