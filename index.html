@@ -387,51 +387,9 @@ body{font-family:var(--font-body);background:var(--white);color:var(--black);ove
 
     <!-- Products Grid -->
     <div>
-      <div class="products-grid">
-        <div class="product-card" onclick="showPage('product')">
-          <div class="product-card-img">👕<span class="bestseller-badge">BESTSELLER</span></div>
-          <div class="product-card-info">
-            <h4>Low Attendance High Maintenance Tee</h4>
-            <div class="price">₹799</div>
-          </div>
-        </div>
-        <div class="product-card" onclick="showPage('product')">
-          <div class="product-card-img" style="background:linear-gradient(135deg,#FCE4F3,#F48CBB);">👕</div>
-          <div class="product-card-info">
-            <h4>Main Character Energy Tee</h4>
-            <div class="price">₹799</div>
-          </div>
-        </div>
-        <div class="product-card" onclick="showPage('product')">
-          <div class="product-card-img" style="background:linear-gradient(135deg,#E8F5E9,#A5D6A7);">👕</div>
-          <div class="product-card-info">
-            <h4>Topper Nahi Toh Notch Hu Tee</h4>
-            <div class="price">₹799</div>
-          </div>
-        </div>
-        <div class="product-card" onclick="showPage('product')">
-          <div class="product-card-img" style="background:linear-gradient(135deg,#E3F2FD,#90CAF9);">👕</div>
-          <div class="product-card-info">
-            <h4>Overthinker Overdresser Tee</h4>
-            <div class="price">₹799</div>
-          </div>
-        </div>
-        <div class="product-card" onclick="showPage('product')">
-          <div class="product-card-img" style="background:linear-gradient(135deg,#FFF8E1,#FFCC80);">👕</div>
-          <div class="product-card-info">
-            <h4>Caffeine & Confidence Tee</h4>
-            <div class="price">₹799</div>
-          </div>
-        </div>
-        <div class="product-card" onclick="showPage('product')">
-          <div class="product-card-img" style="background:linear-gradient(135deg,#F3E5F5,#CE93D8);">👕</div>
-          <div class="product-card-info">
-            <h4>Net Yours Never Was Tee</h4>
-            <div class="price">₹799</div>
-          </div>
-        </div>
-        <div class="load-more">
-          <button class="btn-outline">LOAD MORE</button>
+      <div class="products-grid" id="products-grid">
+        <div class="loading-products">
+          Loading products...
         </div>
       </div>
     </div>
@@ -457,13 +415,16 @@ body{font-family:var(--font-body);background:var(--white);color:var(--black);ove
 
     <!-- Info -->
     <div class="product-info">
-      <h1>Low Attendance High Maintenance Tee</h1>
-      <div class="product-price">₹799</div>
+      <h1>id="product-name"</h1>
+      <div 
+        id="product-price"
+        class="product-price>
+      </div>
       <div class="rating">
         <span class="stars">★★★★</span>
         <span style="color:var(--gray3);">4.9 (120 reviews)</span>
       </div>
-      <p class="product-desc">For girls who attend college for outfits, not lectures. 😎</p>
+      <p id="product-description" class="product-desc">For girls who attend college for outfits, not lectures. 😎</p>
 
       <div class="color-section">
         <label>Color: <strong>Black</strong></label>
@@ -488,7 +449,7 @@ body{font-family:var(--font-body);background:var(--white);color:var(--black);ove
       </div>
 
       <div class="action-btns">
-        <button class="btn-primary" onclick="addToCart()" style="width:100%;padding:14px;font-size:1rem;border-radius:10px;">ADD TO CART</button>
+        <button class="btn-primary" onclick="addToCart(localStorage.getItem('selectedProduct'))" style="width:100%;padding:14px;font-size:1rem;border-radius:10px;">ADD TO CART</button>
         <button class="btn-black" onclick="showPage('checkout')" style="width:100%;padding:14px;font-size:1rem;border-radius:10px;">BUY IT NOW</button>
       </div>
 
@@ -701,7 +662,7 @@ body{font-family:var(--font-body);background:var(--white);color:var(--black);ove
       <div class="menu-item-left"><div class="menu-icon">🔑</div>Change Password</div>
       <span>›</span>
     </div>
-    <div class="menu-item" onclick="showPage('login')" style="color:#e53935;">
+    <div class="menu-item" onclick="logout()" style="color:#e53935;">
       <div class="menu-item-left"><div class="menu-icon" style="background:#ffeaea;">🚪</div>Log Out</div>
       <span>›</span>
     </div>
