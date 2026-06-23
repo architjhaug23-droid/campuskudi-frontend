@@ -1,17 +1,33 @@
-async function addToCart() {
+// cart.js
+
+async function addToCart(productId = null) {
 
   try {
 
     const token = localStorage.getItem('token');
 
     if (!token) {
+
       alert('Please login first');
-      showPage('login');
+
+      if (typeof showPage === 'function') {
+        showPage('login');
+      } else {
+        window.location.href = 'login.html';
+      }
+
       return;
     }
 
-    const productId =
-      localStorage.getItem('selectedProduct');
+    if (!productId) {
+      productId =
+        localStorage.getItem('selectedProduct');
+    }
+
+    if (!productId) {
+      alert('No product selected');
+      return;
+    }
 
     const response = await fetch(
       `${API_URL}/cart/add`,
@@ -33,13 +49,30 @@ async function addToCart() {
     const result = await response.json();
 
     if (result.success) {
+
       alert('Product Added To Cart');
+
+      if (
+        document.getElementById('cart-items')
+      ) {
+        loadCart();
+      }
+
     } else {
-      alert(result.message);
+
+      alert(
+        result.message ||
+        'Unable to add product'
+      );
     }
 
   } catch (error) {
-    console.error(error);
+
+    console.error(
+      'Add To Cart Error:',
+      error
+    );
+
     alert('Unable To Add Product');
   }
 }
@@ -49,63 +82,108 @@ async function loadCart() {
 
   try {
 
-    const token = localStorage.getItem('token');
+    const token =
+      localStorage.getItem('token');
+
+    if (!token) return;
 
     const response = await fetch(
       `${API_URL}/cart`,
       {
         headers: {
-          Authorization: `Bearer ${token}`
+          Authorization:
+            `Bearer ${token}`
         }
       }
     );
 
-    const result = await response.json();
+    const result =
+      await response.json();
 
-    console.log('Cart Response:', result);
+    console.log(
+      'Cart Response:',
+      result
+    );
 
-    const cart = result.cart;
+    const cart =
+      result.cart || {};
 
     const container =
-      document.getElementById('cart-items');
+      document.getElementById(
+        'cart-items'
+      );
 
     if (!container) return;
 
     container.innerHTML = '';
 
-    if (!cart || !cart.items) return;
+    if (
+      !cart.items ||
+      cart.items.length === 0
+    ) {
+
+      container.innerHTML = `
+        <div class="empty-cart">
+          Your cart is empty
+        </div>
+      `;
+
+      return;
+    }
 
     cart.items.forEach(item => {
+
+      const image =
+        item.product?.images?.[0] ||
+        'https://via.placeholder.com/100';
+
+      const name =
+        item.product?.name ||
+        'Product';
+
+      const price =
+        item.selectedPrice ||
+        item.product?.finalPrice ||
+        item.product?.price ||
+        0;
 
       container.innerHTML += `
         <div class="cart-item">
 
           <img
-            src="${item.product?.images?.[0] || ''}"
+            src="${image}"
             width="80"
           >
 
           <div>
 
-            <h4>${item.product?.name || 'Product'}</h4>
+            <h4>${name}</h4>
 
-            <p>₹${item.selectedPrice || 0}</p>
+            <p>₹${price}</p>
 
             <div>
 
-              <button onclick="decreaseQuantity('${item._id}', ${item.quantity})">
+              <button
+                onclick="decreaseQuantity('${item._id}', ${item.quantity})"
+              >
                 -
               </button>
 
-              <span>${item.quantity}</span>
+              <span>
+                ${item.quantity}
+              </span>
 
-              <button onclick="increaseQuantity('${item._id}', ${item.quantity})">
+              <button
+                onclick="increaseQuantity('${item._id}', ${item.quantity})"
+              >
                 +
               </button>
 
             </div>
 
-            <button onclick="removeFromCart('${item._id}')">
+            <button
+              onclick="removeFromCart('${item._id}')"
+            >
               Remove
             </button>
 
@@ -116,90 +194,154 @@ async function loadCart() {
     });
 
     const summary =
-      document.getElementById('cart-summary');
+      document.getElementById(
+        'cart-summary'
+      );
 
     if (summary) {
+
       summary.innerHTML = `
-        <h3>Total: ₹${cart.totalAmount || 0}</h3>
+        <h3>
+          Total: ₹${cart.totalAmount || 0}
+        </h3>
       `;
     }
 
   } catch (error) {
-    console.error('Cart Error:', error);
+
+    console.error(
+      'Cart Error:',
+      error
+    );
   }
 }
 
 
-async function increaseQuantity(itemId, currentQty) {
+async function increaseQuantity(
+  itemId,
+  currentQty
+) {
 
-  const token =
-    localStorage.getItem('token');
+  try {
 
-  await fetch(
-    `${API_URL}/cart/update/${itemId}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        quantity: currentQty + 1
-      })
-    }
-  );
+    const token =
+      localStorage.getItem('token');
 
-  loadCart();
+    await fetch(
+      `${API_URL}/cart/update/${itemId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type':
+            'application/json',
+          Authorization:
+            `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          quantity:
+            currentQty + 1
+        })
+      }
+    );
+
+    loadCart();
+
+  } catch (error) {
+
+    console.error(error);
+  }
 }
 
 
-async function decreaseQuantity(itemId, currentQty) {
+async function decreaseQuantity(
+  itemId,
+  currentQty
+) {
 
   if (currentQty <= 1) return;
 
-  const token =
-    localStorage.getItem('token');
+  try {
 
-  await fetch(
-    `${API_URL}/cart/update/${itemId}`,
-    {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        quantity: currentQty - 1
-      })
-    }
-  );
+    const token =
+      localStorage.getItem('token');
 
-  loadCart();
+    await fetch(
+      `${API_URL}/cart/update/${itemId}`,
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type':
+            'application/json',
+          Authorization:
+            `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          quantity:
+            currentQty - 1
+        })
+      }
+    );
+
+    loadCart();
+
+  } catch (error) {
+
+    console.error(error);
+  }
 }
 
 
-async function removeFromCart(itemId) {
+async function removeFromCart(
+  itemId
+) {
 
-  const token =
-    localStorage.getItem('token');
+  try {
 
-  await fetch(
-    `${API_URL}/cart/remove/${itemId}`,
-    {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`
+    const token =
+      localStorage.getItem('token');
+
+    await fetch(
+      `${API_URL}/cart/remove/${itemId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization:
+            `Bearer ${token}`
+        }
       }
-    }
-  );
+    );
 
-  loadCart();
+    loadCart();
+
+  } catch (error) {
+
+    console.error(error);
+  }
 }
 
 
 function openCart() {
 
-  showPage('cart');
+  if (
+    typeof showPage === 'function'
+  ) {
+    showPage('cart');
+  }
 
   loadCart();
 }
+
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    if (
+      document.getElementById(
+        'cart-items'
+      )
+    ) {
+      loadCart();
+    }
+  }
+);
