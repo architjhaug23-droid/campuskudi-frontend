@@ -1,5 +1,7 @@
+// auth.js
+
 // ==========================
-// SIGNUP
+// REGISTER
 // ==========================
 
 async function register() {
@@ -7,17 +9,17 @@ async function register() {
   const name =
     document.getElementById(
       'signup-name'
-    ).value.trim();
+    )?.value.trim();
 
   const email =
     document.getElementById(
       'signup-email'
-    ).value.trim();
+    )?.value.trim();
 
   const password =
     document.getElementById(
       'signup-password'
-    ).value.trim();
+    )?.value.trim();
 
   if (!name || !email || !password) {
 
@@ -32,7 +34,7 @@ async function register() {
 
     const result =
       await postData(
-        '/auth/signup',
+        '/auth/register',
         {
           name,
           email,
@@ -42,30 +44,37 @@ async function register() {
       );
 
     console.log(
-      'Signup Response:',
+      'Register Response:',
       result
     );
 
     if (!result.success) {
 
       alert(
-        result.message
+        result.message ||
+        'Registration failed'
       );
 
       return;
     }
 
-    localStorage.setItem(
-      'token',
-      result.token
-    );
+    if (result.token) {
 
-    localStorage.setItem(
-      'user',
-      JSON.stringify(
-        result.user
-      )
-    );
+      localStorage.setItem(
+        'token',
+        result.token
+      );
+    }
+
+    if (result.user) {
+
+      localStorage.setItem(
+        'user',
+        JSON.stringify(
+          result.user
+        )
+      );
+    }
 
     alert(
       'Account Created Successfully'
@@ -73,7 +82,11 @@ async function register() {
 
     loadAccount();
 
-    showPage('account');
+    if (
+      typeof showPage === 'function'
+    ) {
+      showPage('account');
+    }
 
   } catch (error) {
 
@@ -86,7 +99,6 @@ async function register() {
 }
 
 
-
 // ==========================
 // LOGIN
 // ==========================
@@ -96,12 +108,12 @@ async function login() {
   const email =
     document.getElementById(
       'login-email'
-    ).value.trim();
+    )?.value.trim();
 
   const password =
     document.getElementById(
       'login-password'
-    ).value.trim();
+    )?.value.trim();
 
   if (!email || !password) {
 
@@ -131,7 +143,8 @@ async function login() {
     if (!result.success) {
 
       alert(
-        result.message
+        result.message ||
+        'Login Failed'
       );
 
       return;
@@ -155,7 +168,11 @@ async function login() {
 
     loadAccount();
 
-    showPage('account');
+    if (
+      typeof showPage === 'function'
+    ) {
+      showPage('account');
+    }
 
   } catch (error) {
 
@@ -166,7 +183,6 @@ async function login() {
     );
   }
 }
-
 
 
 // ==========================
@@ -197,20 +213,19 @@ function loadAccount() {
   if (accountName) {
 
     accountName.innerText =
-      user.name;
+      user.name || '';
   }
 
   if (accountEmail) {
 
     accountEmail.innerText =
-      user.email;
+      user.email || '';
   }
 }
 
 
-
 // ==========================
-// CHECK LOGIN STATUS
+// LOGIN STATUS
 // ==========================
 
 function isLoggedIn() {
@@ -219,7 +234,6 @@ function isLoggedIn() {
     'token'
   );
 }
-
 
 
 // ==========================
@@ -240,24 +254,78 @@ function logout() {
     'Logged Out Successfully'
   );
 
-  showPage('login');
+  if (
+    typeof showPage === 'function'
+  ) {
+    showPage('login');
+  } else {
+    window.location.href =
+      'login.html';
+  }
 }
 
 
+// ==========================
+// VERIFY TOKEN
+// ==========================
+
+async function verifyLogin() {
+
+  const token =
+    localStorage.getItem(
+      'token'
+    );
+
+  if (!token) {
+
+    return false;
+  }
+
+  try {
+
+    const response =
+      await fetch(
+        `${API_URL}/auth/me`,
+        {
+          headers: {
+            Authorization:
+              `Bearer ${token}`
+          }
+        }
+      );
+
+    return response.ok;
+
+  } catch (error) {
+
+    console.error(error);
+
+    return false;
+  }
+}
+
 
 // ==========================
-// AUTO LOAD ACCOUNT
+// AUTO LOAD
 // ==========================
 
 document.addEventListener(
   'DOMContentLoaded',
-  () => {
+  async () => {
 
     if (
       isLoggedIn()
     ) {
 
       loadAccount();
+
+      const valid =
+        await verifyLogin();
+
+      if (!valid) {
+
+        localStorage.clear();
+      }
     }
   }
 );
